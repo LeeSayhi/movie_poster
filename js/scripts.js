@@ -18,7 +18,6 @@
 		// 4、输出所有电影海报
 		var data = data;
 		function addPhoto() {
-			// 获取全部字符串，
 			var template = g('#wrap').innerHTML;
 			var html = [];
 			// 遍历data数组，替换相应的字符串为应该显示的内容
@@ -37,10 +36,64 @@
 		}
 		addPhoto();
 
+		// 6、计算左右分区的范围
+		function range() {
+			var range = { left:{ x:[], y:[] } , right:{ x:[] , y:[] } };
+
+			var wrap = {
+				w: g('#wrap').clientWidth,
+				h: g('#wrap').clientHeight
+			}
+			var photo = {
+				w: g('.photo')[0].clientWidth,
+				h: g('.photo')[0].clientHeight
+			}
+
+			range.wrap = wrap;
+			range.photo = photo;
+
+			range.left.x = [ 0-photo.w, wrap.w/2-photo.w/2 ];
+			range.left.y = [ 0-photo.h, wrap.h];
+
+			range.right.x = [ wrap.w/2+photo.w/2, wrap.w+photo.w ];
+			range.right.y = range.left.y;
+
+			return range;
+		}
+
 		// 5、排序海报
 		function rsort(n) {
+			var _photo = g('.photo');
+			var photos = [];   // 所有海报
+
+			for (var i = 0; i < _photo.length; i++) {
+				_photo[i].className = _photo[i].className.replace(/\s*photo-center\s*/, '')
+				photos.push(_photo[i]);  
+			}
+
 			var photo_center = g('#photo-' + n);
 			photo_center.className += ' photo-center';
+			photo_center = photos.splice(n,1)[0];
+			
+			// 海报分区 左右两部分
+			var photo_left = photos.splice(0, Math.ceil(photos.length/2));
+			var photo_right = photos;
+			var ranges = range();
+
+			for(i in photo_left) {
+				var photo = photo_left[i];
+				photo.style.left = random(ranges.left.x)+'px';
+				photo.style.top = random(ranges.left.y)+'px';
+
+				photo.style['-webkit-transform'] = 'rotate('+random([-150,150])+'deg)';
+			}
+			for(i in photo_right) {
+				var photo = photo_right[i];
+				photo.style.left = random(ranges.right.x)+'px';
+				photo.style.top = random(ranges.right.y)+'px';
+
+				photo.style['-webkit-transform'] = 'rotate('+random([-150,150])+'deg)';
+			}
 		}
 
 
