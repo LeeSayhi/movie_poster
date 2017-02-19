@@ -15,10 +15,8 @@
 			font-family:"Avenir Next","Lantinghei SC";
 			-webkit-font-smoothing:antialiased;
 			-moz-font-smoothing:antialiased;
-			-ms-font-smoothing:antialiased;
-
 		}
-		.warp{
+		.wrap{
 			width:100%;
 			height:600px;
 			position: absolute;
@@ -27,10 +25,9 @@
 			overflow:hidden;
 			-webkit-perspective:800px;
 			-moz-perspective:800px;
-			-ms-perspective:800px;
 			background-color:#333;
 		}
-		/*海报*/
+		/*海报样式*/
 		.photo{
 			width:260px;
 			height:320px;
@@ -40,8 +37,10 @@
 			transition: all 0.5s ease-in;
 			-webkit-transition: all 0.5s ease-in;
 			-moz-transition: all 0.5s ease-in;
-			-ms-transition: all 0.5s ease-in;
-
+			left:50%;
+			top:50%;
+			margin-left:-130px;
+			margin-top:-160px;
 			/*transform: rotateY(30deg);
 			-webkit-transform: rotateY(30deg);*/
 		}
@@ -55,7 +54,6 @@
 			padding:20px;
 			box-sizing:border-box;	
 		}
-		.photo .side-front{}
 		.photo .side-front .image{
 			width:100%;
 			height:250px;
@@ -70,17 +68,11 @@
 			font-size:16px;
 			line-height:50px;
 		}
-
-		.photo .side-back {
-
-		}
 		.photo .side-back .desc {
 			color:#666;
 			font-size:14px;
 			line-height:1.5em;
 		}
-
-		/*当前选中海报样式*/
 		.photo-center{
 			left:50%;
 			top:50%;
@@ -88,51 +80,73 @@
 			margin-top:-160px;
 			z-index:999;
 		}
-
-		/*翻转*/
+		/*负责翻转*/
 		.photo-wrap{
 			position: absolute;
 			width:100%;
 			height:100%;
 			-webkit-transform-style:preserve-3d;
 			-webkit-transition:all 0.6s ease;
-			transform-style:preserve-3d;
-			transition:all 0.6s ease;
 			-moz-transform-style:preserve-3d;
 			-moz-transition:all 0.6s ease;
 		}
-
-
 		.photo-wrap .side-front{
 			-webkit-transform:rotateY(0deg);
 			-moz-transform:rotateY(0deg);
-			-ms-transform:rotateY(0deg);
 		}
 		.photo-wrap .side-back {
 			-webkit-transform:rotateY(180deg);
 			-moz-transform:rotateY(180deg);
-			-ms-transform:rotateY(180deg);
-			/*在父级元素设置了-moz-transform-style:preserve-3d;时会有很好的rotateY(180deg)旋转效果*/
 		}
 		.photo-wrap .side{
 			-webkit-backface-visibility:hidden;
-			-ms-backface-visibility:hidden;
 			-moz-backface-visibility:hidden;
 		}
-
-
 		.photo-front .photo-wrap{
 			-webkit-transform:rotateY(0deg);
-			-ms-transform:rotateY(0deg);
 			-moz-transform:rotateY(0deg);
 		}
 		.photo-back .photo-wrap{
 			-webkit-transform:rotateY(180deg);
 			-moz-transform:rotateY(180deg);
-			-ms-transform:rotateY(180deg);
 		}
 
+		/*控制按钮*/
+		.nav {
+			position: absolute;
+			width: 80%;
+			height: 30px;
+			line-height: 30px;
+			left: 10%;
+			bottom: 20px;
+			z-index: 999;
+			text-align: center;
+		}
+		/*普通样式*/
+		.nav .s {
+			display: inline-block;
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			background-color: #aaa;
+			border-radius: 50%;
 
+			-webkit-transform: scale(.48);
+			-moz-transform: scale(.48);
+			-webkit-transition: all .5s;
+			-moz-transition: all .5s;
+		}
+		/*当前选中样式*/
+		.nav .s_current {
+			background: url(images/icon1.png) center center no-repeat #aaa;
+			-webkit-transform: scale(1);
+			-moz-transform: scale(1);
+		}
+		.nav .s_back {
+			-webkit-transform: rotateY(-180deg);
+			-moz-transform: rotateY(-180deg);
+			background-color: #555;
+		}
 	</style>
 	
 </head>
