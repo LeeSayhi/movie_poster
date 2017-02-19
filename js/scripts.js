@@ -1,34 +1,34 @@
+		var data = data;  // 所需数据
+		var type = 'circle';  // 默认环形
+
 		// 获取所需元素
 		function g(selector) {
 			var method = selector.substr(0,1) == '.' ? 'getElementsByClassName' : 'getElementById';
 			return document[method](selector.substr(1));
 		}
 
-		// 随机生成值  random(range[min,max])
-		function random(range) {
-			
+		// 随机生成值 range[min,max]
+		function random(range) {			
 			var max = Math.max(range[0], range[1]);
 			var min = Math.min(range[0], range[1]);
-			var diff = max - min;
-	
+			var diff = max - min;	
 			var number = Math.ceil((Math.random()*diff + min));
 			return number; 
 		}
 
-		// 2、输出所有电影海报
-		var data = data;
+		// 输出所有电影海报
 		function addPhoto() {
 			var template = g('#wrap').innerHTML;
 			var html = [];  
 			var nav = [];  // 按钮
-			// 遍历data数组，替换相应的字符串为应该显示的内容
+			// 替换相应的字符串为应该显示的内容
 			for (var i = 0; i < data.length; i++) {
 				var _html = template
 								.replace('{{index}}', i)
 								.replace('{{img}}', data[i].img)
 								.replace('{{caption}}', data[i].caption)
 								.replace('{{desc}}', data[i].desc);
-				// 将替换过的字符串添加到 html 数组中
+	
 				html.push( _html );
 				nav.push('<span class="s" id="nav_'+i+'" onclick="turn(g(\'#photo-'+i+'\'))">&nbsp；</span>');
 			}	
@@ -39,7 +39,7 @@
 		}
 		addPhoto();
 
-		// 4、计算左右分区的范围
+		// 计算左右分区的范围
 		function range() {
 			var range = { 
 				left: { x:[], y:[] } , 
@@ -66,11 +66,12 @@
 			return range;
 		}
 
-		// 3、排序海报
+		// 排序海报
 		function rsort(n) {
 			var _photo = g('.photo');
 			var photos = [];   // 所有海报
 			var navs = g('.s'); // 所有控制按钮
+			index = n;
 
 			for (var i = 0; i < _photo.length; i++) {
 				_photo[i].className = _photo[i].className.replace(/\s*photo-center\s*/, '')
@@ -93,19 +94,34 @@
 			var photo_right = photos;
 			var ranges = range();
 
-			for(i in photo_left) {
-				var photo = photo_left[i];
-				photo.style.left = random(ranges.left.x)+'px';
-				photo.style.top = random(ranges.left.y)+'px';
+			// 环形排列
+			if (type == 'circle') {
+				for(i in photo_left) {
+					var photo = photo_left[i];
+					photo.style["-webkit-transform"] = photo.style["transform"] = "rotate(" + random([-60, 60]) + "deg) scale(.8) translate(600px)";
 
-				photo.style['-webkit-transform'] = photo.style['transform'] = 'rotate('+random([-150,150])+'deg) scale(1)';
+				}
+				for(i in photo_right) {
+					var photo = photo_right[i];
+					photo.style["-webkit-transform"] = photo.style["transform"] = "rotate(" + random([-60, 60]) + "deg) scale(.8) translate(-600px)"  	
+				}
 			}
-			for(i in photo_right) {
-				var photo = photo_right[i];
-				photo.style.left = random(ranges.right.x)+'px';
-				photo.style.top = random(ranges.right.y)+'px';
-
-				photo.style['-webkit-transform'] = photo.style['transform'] = 'rotate('+random([-150,150])+'deg) scale(1)';
+			// 分散排列
+			else {
+				for(i in photo_left) {
+					var photo = photo_left[i];
+					photo.style.left = random(ranges.left.x)+'px';
+					photo.style.top = random(ranges.left.y)+'px';
+		
+					photo.style['-webkit-transform'] = photo.style['transform'] = 'rotate('+random([-150,150])+'deg) scale(1)';
+				}
+				for(i in photo_right) {
+					var photo = photo_right[i];
+					photo.style.left = random(ranges.right.x)+'px';
+					photo.style.top = random(ranges.right.y)+'px';
+		
+					photo.style['-webkit-transform'] = photo.style['transform'] = 'rotate('+random([-150,150])+'deg) scale(1)';
+				}
 			}
 
 			// 控制按钮
@@ -136,4 +152,13 @@
 				g('#nav_'+n).className = g('#nav_'+n).className.replace(/\s*s_back\s*/, ' ');
 			}
 			return elem.className = cls;
+		}
+
+		// 改变展现分格
+		function changeType(string) {
+			if (type == string) {
+				return
+			}
+			type = string;
+			rsort(index);
 		}
